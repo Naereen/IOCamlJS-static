@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <!-- <meta name="description" content=Compiling a new kernel /> -->
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/stylesheet.css">
+
+    <title>IOCamlJS Demos</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/andrewray/iocamljs">View on GitHub</a>
+
+          <h1 id="project_title">IOCamlJS Demos</h1>
+          <h2 id="project_tagline">Compiling a new kernel</h2>
+
+          <!--
+          <section id="downloads">
+            <a class="zip_download_link" href="#">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="#">Download this project as a tar.gz file</a>
+          </section>
+          -->
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><code class="highlighter-rouge">iocamljs-kernel.0.4.6</code> now builds using a tool from <code class="highlighter-rouge">js_of_ocaml</code> called <code class="highlighter-rouge">jsoo_mktop</code>.
+Additionally the package installs a library which allows custom iocamljs top levels 
+to be built.</p>
+
+<p>The <code class="highlighter-rouge">jsoo_mktop</code> program (version 2.4.1) takes the following arguments</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Usage: jsoo_mktop [options] [ocamlfind arguments] 
+ -verbose			Output intermediate commands
+ -help				Display usage
+ -top-syntax [pkg]		Include syntax extension provided by [pkg] findlib package
+ -top-syntax-mod [mod]		Include syntax extension provided by the module [mod]
+ -o [name]			Set output filename
+ -jsopt [opt]			Pass [opt] option to js_of_ocaml compiler
+ -export-package [pkg]		Compile toplevel with [pkg] package loaded
+ -export-unit [unit]		Export [unit]
+ -dont-export-unit [unit]	Dont export [unit]
+</code></pre></div></div>
+
+<p>The following invocation will build a basic iocaml toplevel</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ jsoo_mktop -dont-export-unit gc -export-package iocamljs-kernel \
+    -jsopt +weak.js -jsopt +toplevel.js -o iocaml.byte
+</code></pre></div></div>
+
+<p>This will create a few files named <code class="highlighter-rouge">*.cmis.js</code> and <code class="highlighter-rouge">iocaml.js</code>.  These need to 
+be packed together with <code class="highlighter-rouge">kernel.js</code> to create the final iocamljs kernel.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat *.cmis.js \
+  `opam config var lib`/iocamljs-kernel/kernel.js iocaml.js &gt; \
+  `opam config var share`/iocamljs-kernel/profile/static/services/kernels/js/kernel.min.js
+</code></pre></div></div>
+
+<p>To include other packages add more <code class="highlighter-rouge">-export-package</code> declarations.  You may need to
+manually export some extra modules with <code class="highlighter-rouge">-export-unit</code> (this requires a bit of trial and
+error - load the kernel, watch the messages in the browser console and see whats missing).</p>
+
+<p>Syntax extensions can also be added with <code class="highlighter-rouge">-top-syntax</code>.</p>
+
+<p>A more complex example with js_of_ocaml, lwt, syntax extensions and uuidm.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ jsoo_mktop -dont-export-unit gc \
+  -top-syntax lwt.syntax \
+  -top-syntax js_of_ocaml.syntax \
+  -export-package lwt \
+  -export-package js_of_ocaml \
+  -export-package uuidm \
+  -export-package iocamljs-kernel \
+  -jsopt +weak.js -jsopt +toplevel.js -o iocaml.byte
+</code></pre></div></div>
+
+ 
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <!-- <p class="copyright">IOCamlJS from <a href="https://github.com/ujamjar">MicroJamJar Ltd</a></p> -->
+      </footer>
+    </div>
+
+  </body>
+</html>
+
+

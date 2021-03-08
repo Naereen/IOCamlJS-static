@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <!-- <meta name="description" content=Creating a new static site /> -->
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/stylesheet.css">
+
+    <title>IOCamlJS Demos</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/andrewray/iocamljs">View on GitHub</a>
+
+          <h1 id="project_title">IOCamlJS Demos</h1>
+          <h2 id="project_tagline">Creating a new static site</h2>
+
+          <!--
+          <section id="downloads">
+            <a class="zip_download_link" href="#">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="#">Download this project as a tar.gz file</a>
+          </section>
+          -->
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><code class="highlighter-rouge">iocaml</code> can automatically create the files requires for a simple
+static site with the following features</p>
+
+<ul>
+  <li>one or more notebooks</li>
+  <li>a single (user configurable) iocamljs kernel</li>
+  <li>configurable site root path</li>
+</ul>
+
+<p>To get started we would use the standard iocaml server 
+to create some notebooks with a potentially 
+<a href="compiling_kernels.html">custom kernel</a>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ iocaml -js my_test_kernel my_notebooks/
+</code></pre></div></div>
+
+<p>Once happy with the notebooks a site can be created</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ iocaml -js my_test_kernel my_notebooks/ \
+    -create-static-site my_site_dir \
+    -static-site-base-path /online_dir
+</code></pre></div></div>
+
+<p>The site will be created in <code class="highlighter-rouge">my_site_dir</code>.</p>
+
+<p>The option <code class="highlighter-rouge">-static-site-base-path</code> configures the internal links within the 
+generated html to allow the notebooks to be hosted at an arbitrary url path 
+on the server.  If left out then the notebooks will be served from the
+root url.</p>
+
+<ul>
+  <li>For a <code class="highlighter-rouge">gh-pages</code> project site you would use <code class="highlighter-rouge">-static-site-base-path /project_name</code></li>
+  <li>You can also serve directly from the file system.  Say the site is generated in 
+<code class="highlighter-rouge">/my/path</code>.  Using <code class="highlighter-rouge">-static-site-base-path "file:///my/path"</code> will allow you to test
+the site from the browser directly.  <em>note; chromium-browser should be started
+with the option <code class="highlighter-rouge">--allow-file-access-from-files</code></em>.</li>
+</ul>
+
+ 
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <!-- <p class="copyright">IOCamlJS from <a href="https://github.com/ujamjar">MicroJamJar Ltd</a></p> -->
+      </footer>
+    </div>
+
+  </body>
+</html>
+
+
